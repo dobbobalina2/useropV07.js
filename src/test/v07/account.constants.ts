@@ -12,7 +12,7 @@ import {
   ETHERS_NODE_JSON_RPC_PROVIDER,
   ETHERS_BUNDLER_JSON_RPC_PROVIDER,
 } from "../helpers";
-import { V06 } from "../..";
+import { V07 } from "../..";
 
 const EOA_PK = generatePrivateKey();
 const VIEM_ACC = privateKeyToAccount(EOA_PK);
@@ -30,8 +30,8 @@ const ETHERS_WALLET = new ethers.BaseWallet(new ethers.SigningKey(EOA_PK));
 export const ACCOUNTS = [
   {
     type: "SimpleAccount, withViemWalletClient (account hoisted)",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         VIEM_PUBLIC_CLIENT,
         VIEM_WALLET_CLIENT,
       ),
@@ -39,8 +39,8 @@ export const ACCOUNTS = [
   },
   {
     type: "SimpleAccount, withViemWalletClient (account not hoisted)",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         VIEM_PUBLIC_CLIENT,
         VIEM_WALLET_CLIENT_NO_HOIST,
         VIEM_ACC,
@@ -49,8 +49,8 @@ export const ACCOUNTS = [
   },
   {
     type: "SimpleAccount, with JsonRpcProvider",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         ETHERS_JSON_RPC_PROVIDER,
         VIEM_WALLET_CLIENT,
       ),
@@ -58,8 +58,8 @@ export const ACCOUNTS = [
   },
   {
     type: "SimpleAccount, withEthersSigner",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         VIEM_PUBLIC_CLIENT,
         ETHERS_WALLET,
       ),
@@ -67,8 +67,8 @@ export const ACCOUNTS = [
   },
   {
     type: "SimpleAccount, with separate viem node and bundler PublicClients",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         VIEM_NODE_PUBLIC_CLIENT,
         VIEM_WALLET_CLIENT,
       ),
@@ -78,8 +78,8 @@ export const ACCOUNTS = [
   },
   {
     type: "SimpleAccount, with separate ethers node and bundler JsonRpcProviders",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         ETHERS_NODE_JSON_RPC_PROVIDER,
         VIEM_WALLET_CLIENT,
       ),
@@ -89,13 +89,13 @@ export const ACCOUNTS = [
   },
   {
     type: "SimpleAccount, with Stackup V1 PAYG paymaster",
-    instance: new V06.Account.Instance({
-      ...V06.Account.Common.SimpleAccount.base(
+    instance: new V07.Account.Instance({
+      ...V07.Account.Common.SimpleAccount.base(
         VIEM_PUBLIC_CLIENT,
         VIEM_WALLET_CLIENT,
       ),
 
-      requestPaymaster: V06.Account.Hooks.RequestPaymaster.withCommon({
+      requestPaymaster: V07.Account.Hooks.RequestPaymaster.withCommon({
         variant: "stackupV1",
         parameters: { rpcUrl: STACKUP_V1_PM_RPC, type: "payg" },
       }),

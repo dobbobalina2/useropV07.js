@@ -1,7 +1,7 @@
 import { PublicClient, Hex } from "viem";
 import { JsonRpcProvider } from "ethers";
 import { RequestGasValuesFunc } from "../types";
-import { toRawUserOperation } from "../../../entryPoint";
+import { packGas, toRawUserOperation } from "../../../entryPoint";
 
 interface GasEstimate {
   preVerificationGas: Hex | number;
@@ -21,10 +21,14 @@ export const withEthClient = (
           : [toRawUserOperation(userop), entryPoint],
       )) as GasEstimate;
 
+      const accountGasLimits = packGas(
+        BigInt(est.callGasLimit),
+        BigInt(est.verificationGasLimit),
+      );
+
       return {
         preVerificationGas: BigInt(est.preVerificationGas),
-        verificationGasLimit: BigInt(est.verificationGasLimit),
-        callGasLimit: BigInt(est.callGasLimit),
+        accountGasLimits: accountGasLimits,
       };
     };
   }
@@ -38,10 +42,14 @@ export const withEthClient = (
           : [userop, entryPoint],
     })) as GasEstimate;
 
+    const accountGasLimits = packGas(
+      BigInt(est.callGasLimit),
+      BigInt(est.verificationGasLimit),
+    );
+
     return {
       preVerificationGas: BigInt(est.preVerificationGas),
-      verificationGasLimit: BigInt(est.verificationGasLimit),
-      callGasLimit: BigInt(est.callGasLimit),
+      accountGasLimits: accountGasLimits,
     };
   };
 };

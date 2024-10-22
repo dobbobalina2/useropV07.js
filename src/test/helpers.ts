@@ -8,9 +8,9 @@ import {
 } from "viem";
 import { localhost } from "viem/chains";
 
-export const ETH_RPC = "http://localhost:8545";
-export const NODE_RPC = "http://localhost:8546";
-export const BUNDLER_RPC = "http://localhost:43370";
+export const ETH_RPC = "https://eth-sepolia.g.alchemy.com/v2/tS791umNStZEi7JR5hBHzoGr8SowKlpX";
+export const NODE_RPC = "https://eth-sepolia.g.alchemy.com/v2/tS791umNStZEi7JR5hBHzoGr8SowKlpX";
+export const BUNDLER_RPC = "https://eth-sepolia.g.alchemy.com/v2/tS791umNStZEi7JR5hBHzoGr8SowKlpX";
 export const STACKUP_V1_PM_RPC = "http://localhost:43371";
 export const VIEM_PUBLIC_CLIENT = createPublicClient({
   chain: localhost,

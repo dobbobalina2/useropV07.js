@@ -1,6 +1,8 @@
 import { PublicClient } from "viem";
 import { RequestGasPriceFunc } from "../types";
 import { JsonRpcProvider } from "ethers";
+import { packGas } from "../../../entryPoint";
+
 
 export const withEthClient = (
   ethClient: PublicClient | JsonRpcProvider,
@@ -9,15 +11,21 @@ export const withEthClient = (
     return async () => {
       const feeData = await ethClient.getFeeData();
       if (!feeData.maxFeePerGas || !feeData.maxPriorityFeePerGas) {
+        const gasFees = packGas(
+          feeData.gasPrice || 0n,
+          feeData.gasPrice || 0n,
+        );
         return {
-          maxFeePerGas: feeData.gasPrice || 0n,
-          maxPriorityFeePerGas: feeData.gasPrice || 0n,
+          gasFees
         };
       }
+      const gasFees = packGas(
+        feeData.maxFeePerGas,
+        feeData.maxPriorityFeePerGas,
+      );
 
       return {
-        maxFeePerGas: feeData.maxFeePerGas,
-        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+        gasFees
       };
     };
   }
@@ -26,17 +34,23 @@ export const withEthClient = (
     const block = await ethClient.getBlock();
     if (!block.baseFeePerGas) {
       const gp = await ethClient.getGasPrice();
+      const gasFees = packGas(
+        gp,
+        gp,
+      );
       return {
-        maxFeePerGas: gp,
-        maxPriorityFeePerGas: gp,
+        gasFees
       };
     }
 
     const maxPriorityFeePerGas = await ethClient.estimateMaxPriorityFeePerGas();
     const maxFeePerGas = block.baseFeePerGas * 2n + maxPriorityFeePerGas;
-    return {
+    const gasFees = packGas(
       maxFeePerGas,
       maxPriorityFeePerGas,
+    );
+    return {
+      gasFees
     };
   };
 };

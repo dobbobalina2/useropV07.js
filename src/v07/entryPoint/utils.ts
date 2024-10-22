@@ -4,8 +4,25 @@ import {
   encodeAbiParameters,
   parseAbiParameters,
   keccak256,
+  pad,
+  toHex,
+  Hex,
+  concat,
 } from "viem";
 import { RawUserOperation, UserOperation } from "./types";
+
+  /**
+   * For accountGasLimits, gas1 represents callGasLimit and gas2 represents verificationGasLimit.
+   * For gasFees, gas1 represents maxFeePerGas and gas2 represents maxPriorityFeePerGas.
+   */
+export const packGas = (gas1: bigint, gas2: bigint):Hex => { 
+
+  return concat([
+    pad(toHex(gas1), { size: 16 }),
+    pad(toHex(gas2), { size: 16 })
+  ]);
+}
+
 
 export const calculateUserOpHash = (
   userop: UserOperation,
@@ -14,18 +31,16 @@ export const calculateUserOpHash = (
 ) => {
   const packed = encodeAbiParameters(
     parseAbiParameters(
-      "address, uint256, bytes32, bytes32, uint256, uint256, uint256, uint256, uint256, bytes32",
+      "address, uint256, bytes32, bytes32, bytes32, uint256, bytes32, bytes32",
     ),
     [
       userop.sender,
       userop.nonce,
       keccak256(userop.initCode),
       keccak256(userop.callData),
-      userop.callGasLimit,
-      userop.verificationGasLimit,
+      userop.accountGasLimits,
       userop.preVerificationGas,
-      userop.maxFeePerGas,
-      userop.maxPriorityFeePerGas,
+      userop.gasFees,
       keccak256(userop.paymasterAndData),
     ],
   );
@@ -44,11 +59,9 @@ export const toRawUserOperation = (userop: UserOperation): RawUserOperation => {
     nonce: numberToHex(userop.nonce),
     initCode: userop.initCode,
     callData: userop.callData,
-    callGasLimit: numberToHex(userop.callGasLimit),
-    verificationGasLimit: numberToHex(userop.verificationGasLimit),
+    accountGasLimits: userop.accountGasLimits,
     preVerificationGas: numberToHex(userop.preVerificationGas),
-    maxFeePerGas: numberToHex(userop.maxFeePerGas),
-    maxPriorityFeePerGas: numberToHex(userop.maxPriorityFeePerGas),
+    gasFees: userop.gasFees,
     paymasterAndData: userop.paymasterAndData,
     signature: userop.signature,
   };

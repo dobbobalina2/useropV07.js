@@ -21,7 +21,7 @@ export type RequestSignatureFunc = (
 ) => Promise<Hex>;
 
 export type RequestGasPriceFunc = () => Promise<
-  Pick<EntryPoint.UserOperation, "maxFeePerGas" | "maxPriorityFeePerGas">
+  Pick<EntryPoint.UserOperation, "gasFees">
 >;
 
 export type RequestGasValuesFunc = (
@@ -31,7 +31,7 @@ export type RequestGasValuesFunc = (
 ) => Promise<
   Pick<
     EntryPoint.UserOperation,
-    "preVerificationGas" | "verificationGasLimit" | "callGasLimit"
+    "preVerificationGas" | "accountGasLimits"
   >
 >;
 

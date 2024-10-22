@@ -8,7 +8,7 @@ import {
   parseEther,
 } from "viem";
 
-import { V06 } from "../..";
+import { V07 } from "../..";
 
 describe("Account", () => {
   ACCOUNTS.forEach((account) => {
@@ -20,12 +20,14 @@ describe("Account", () => {
       });
 
       test("Can build a UserOperation", async () => {
+        let sender = await acc.getSender();
+        console.log(sender);``
         const build = await acc
           .encodeCallData("execute", [await acc.getSender(), 1n, "0x"])
           .buildUserOperation();
 
         expect(build.userOpHash).not.toEqual(zeroHash);
-        expect(build.userOperation).not.toEqual(V06.EntryPoint.DEFAULT_USEROP);
+        expect(build.userOperation).not.toEqual(V07.EntryPoint.DEFAULT_USEROP);
       });
 
       test("Can send a valid UserOperation to be included onchain", async () => {
@@ -97,7 +99,7 @@ describe("Account", () => {
 
           const build2 = await acc.buildUserOperation();
           expect(build2.userOperation).not.toEqual(
-            V06.EntryPoint.DEFAULT_USEROP,
+            V07.EntryPoint.DEFAULT_USEROP,
           );
         });
       });
@@ -112,7 +114,7 @@ describe("Account", () => {
             .encodeCallData("execute", [await acc.getSender(), 1n, "0x"])
             .buildUserOperation();
           expect(build.userOperation).not.toEqual(
-            V06.EntryPoint.DEFAULT_USEROP,
+            V07.EntryPoint.DEFAULT_USEROP,
           );
 
           const buildWithOverride = acc

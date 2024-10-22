@@ -5,11 +5,9 @@ export interface UserOperation {
   nonce: bigint;
   initCode: Hex;
   callData: Hex;
-  callGasLimit: bigint;
-  verificationGasLimit: bigint;
+  accountGasLimits: Hex;
   preVerificationGas: bigint;
-  maxFeePerGas: bigint;
-  maxPriorityFeePerGas: bigint;
+  gasFees: Hex;
   paymasterAndData: Hex;
   signature: Hex;
 }
@@ -19,11 +17,9 @@ export interface RawUserOperation {
   nonce: Hex;
   initCode: Hex;
   callData: Hex;
-  callGasLimit: Hex;
-  verificationGasLimit: Hex;
+  accountGasLimits: Hex;
   preVerificationGas: Hex;
-  maxFeePerGas: Hex;
-  maxPriorityFeePerGas: Hex;
+  gasFees: Hex;
   paymasterAndData: Hex;
   signature: Hex;
 }
